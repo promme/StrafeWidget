@@ -52,17 +52,8 @@ public class HLTVFetcher {
     }
 
     class HltvFeedTask extends AsyncTask<Void, Void, Void> {
-        ProgressDialog mDialog;
 
 
-        @Override
-        protected void onPreExecute() {
-
-            mDialog = new ProgressDialog(mContext);
-            mDialog.setTitle("Loading Matches");
-            mDialog.show();
-            super.onPreExecute();
-        }
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -70,14 +61,12 @@ public class HLTVFetcher {
             HttpGet getRequest = new HttpGet(FETCH_MATCHES_URL);
 
             try {
-                Log.d("Statuscode", "1");
                 HttpResponse response = client.execute(getRequest);
-                Log.d("Statuscode", "2");
                 StatusLine statusline = response.getStatusLine();
                 int statusCode = statusline.getStatusCode();
 
                 if (statusCode != 200) {
-                    Toast.makeText(mContext, "no interwebs", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "No internetconnection found", Toast.LENGTH_LONG).show();
 
                     return null;
                 }
@@ -102,7 +91,6 @@ public class HLTVFetcher {
                 Log.i("JSON matches", matches.toString());
                 for (int i = 0; i < matches.length(); i++) {
                     mAllMatches.add(new HLTVObject(matches.getJSONObject(i)));
-                    Log.e("****json obj", mAllMatches.get(i).getLink());
                 }
 
             } catch (Exception e) {
@@ -114,7 +102,6 @@ public class HLTVFetcher {
         @Override
         protected void onPostExecute(Void result) {
 
-            mDialog.dismiss();
             mCallback.onHltvMatchesFetched(mAllMatches);
 
 
