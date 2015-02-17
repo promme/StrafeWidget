@@ -33,5 +33,5 @@
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

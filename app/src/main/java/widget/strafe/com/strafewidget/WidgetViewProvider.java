@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,8 +28,10 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import widget.strafe.com.strafewidget.Objects.GosuGamersMatchObject;
 import widget.strafe.com.strafewidget.R;
 import widget.strafe.com.strafewidget.StrafeWidgetProvider;
+import widget.strafe.com.strafewidget.Tasks.GosuGamersTask;
 
 public class WidgetViewProvider extends RemoteViewsService {
     @Override
@@ -41,33 +44,41 @@ class StrafeRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory 
     private static final int mCount = 10;
     private List<String> mWidgetItems = new ArrayList<String>();
     private Context mContext;
+    private ArrayList<GosuGamersMatchObject> gosuGamersMatchObjectsArraylist;
+    public static boolean isDoneFetching = false;
     private int mAppWidgetId;
 
     public StrafeRemoteViewsFactory(Context context, Intent intent) {
+        Bundle arraylistBundle = intent.getBundleExtra("arraylistBundle");
+        gosuGamersMatchObjectsArraylist = (ArrayList<GosuGamersMatchObject>) arraylistBundle.getSerializable("arraylistBundle");
+        Log.d("size" , "" + gosuGamersMatchObjectsArraylist.size());
         mContext = context;
         mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
     }
 
     public void onCreate() {
+        isDoneFetching = false;
+
         for (int i = 0; i < mCount; i++) {
             mWidgetItems.add("heaton");
         }
     }
 
     public void onDestroy() {
-        mWidgetItems.clear();
+
+        gosuGamersMatchObjectsArraylist.clear();
     }
 
     public int getCount() {
-        return mCount;
+        return gosuGamersMatchObjectsArraylist.size();
     }
 
     public RemoteViews getViewAt(int position) {
 
         RemoteViews rv = new RemoteViews(mContext.getPackageName(),
                 R.layout.widget_row);
-        rv.setTextViewText(R.id.matchinfo, "Heaton " + position);
+        rv.setTextViewText(R.id.matchinfo, gosuGamersMatchObjectsArraylist.get(position).getTeam1_Name() + " vs " + gosuGamersMatchObjectsArraylist.get(position).getTeam2_Name());
 
         return rv;
     }
