@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    tools:ignore="MergeRootFrame"
+
+    >
+<TextView
+    android:background="#FFFFFF"
+    android:textColor="#000000"
+    android:text="Ninjas in Pyjamas  \nHeaton          21:01"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/widget_textview"/>
+    <ListView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/match_list_view"/>
+
+    </LinearLayout>
